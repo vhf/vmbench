@@ -1,6 +1,6 @@
 defmodule Echo do
   def start(_, _) do
-    tcp_options = [:binary, {:packet, 0}, {:active, false}]
+    tcp_options = [:binary, {:packet, 0}, {:active, false}, {:nodelay, true}]
     {:ok, socket} = :gen_tcp.listen(25000, tcp_options)
     listen(socket)
   end
