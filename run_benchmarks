@@ -213,6 +213,12 @@ benchmarks = [{
     'server': ['/usr/src/servers/gohttp'],
     'server_address': tcp_address,
     'client': http_client,
+}, {
+    'name': 'erlang-elixir',
+    'title': 'TCP echo server (elixir)',
+    'server': ['/bin/sh', '-c', "'cd /usr/src/servers/echo; MIX_ENV=prod mix run --no-halt'"],
+    'server_address': tcp_address,
+    'client': tcp_client,
 }]
 
 
