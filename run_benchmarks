@@ -214,7 +214,7 @@ benchmarks = [{
     'server_address': tcp_address,
     'client': http_client,
 }, {
-    'name': 'erlang-elixir',
+    'name': 'tcpecho-erlang-elixir',
     'title': 'TCP echo server (elixir)',
     'server': ['/bin/sh', '-c', "'cd /usr/src/servers/echo; MIX_ENV=prod mix run --no-halt'"],
     'server_address': tcp_address,
@@ -299,11 +299,11 @@ def server_container_exists():
 def kill_server():
     if server_is_running():
         print('Shutting down server...')
-        subprocess.check_output(['docker', 'stop', 'magicbench'])
+        subprocess.call(['docker', 'stop', 'magicbench'])
 
     if server_container_exists():
         print('Removing server container...')
-        subprocess.check_output(['docker', 'rm', 'magicbench'])
+        subprocess.call(['docker', 'rm', 'magicbench'])
 
 
 def format_report(data, target_file):
@@ -508,7 +508,7 @@ def main():
         print('Warming up server...')
         warmup_cmd = benchmark['client'] + warmup
         print(' '.join(warmup_cmd))
-        subprocess.check_output(warmup_cmd)
+        subprocess.call(warmup_cmd)
         print()
 
         duration = args.duration
