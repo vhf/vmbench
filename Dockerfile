@@ -7,7 +7,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 ENV LANG en_US.UTF-8
 ENV WORKON_HOME /usr/local/python-venvs
-ENV GOMAXPROCS 1
 ENV MIX_HOME /usr/local/mix
 
 RUN mkdir -p /usr/local/python-venvs

@@ -24,7 +24,6 @@ _socket = os.path.abspath(os.path.join(_dir, 'sockets'))
 server_base = ['docker', 'run', '--rm', '-t', '-p', '25000:25000',
                '-e', 'UID={}'.format(os.geteuid()),
                '-e', 'GID={}'.format(os.getegid()),
-               '-e', 'MIX_ENV=prod',
                '-v', '{_cache}:/var/lib/cache'.format(_cache=_cache),
                '-v', '{_socket}:/tmp/sockets'.format(_socket=_socket),
                '--name', 'magicbench', 'magic/benchmark']
@@ -87,6 +86,13 @@ benchmarks = [{
     'client': tcp_client,
 }, {
     'name': 'tcpecho-golang-sockets',
+    'title': 'TCP echo server (golang)',
+    'server': ['/usr/src/servers/goecho'],
+    'server_env': ['-e', 'GOMAXPROCS', '1'],
+    'server_address': tcp_address,
+    'client': tcp_client,
+}, {
+    'name': 'tcpecho-golang-sockets-nolimit',
     'title': 'TCP echo server (golang)',
     'server': ['/usr/src/servers/goecho'],
     'server_address': tcp_address,
@@ -218,6 +224,14 @@ benchmarks = [{
     'name': 'tcpecho-erlang-elixir',
     'title': 'TCP echo server (elixir)',
     'server': ['/bin/sh', '-c', "cd /usr/src/servers/echo && elixir -pa _build/prod/consolidated --no-halt --erl \"+S 1:1\" -S mix"],
+    'server_env': ['-e', 'MIX_ENV', 'prod'],
+    'server_address': tcp_address,
+    'client': tcp_client,
+}, {
+    'name': 'tcpecho-erlang-elixir-nolimit',
+    'title': 'TCP echo server (elixir)',
+    'server': ['/bin/sh', '-c', "cd /usr/src/servers/echo && elixir -pa _build/prod/consolidated --no-halt -S mix"],
+    'server_env': ['-e', 'MIX_ENV', 'prod'],
     'server_address': tcp_address,
     'client': tcp_client,
 }]
@@ -503,7 +517,10 @@ def main():
         print()
 
         print('Starting server...')
-        server_cmd = server_base + benchmark['server']
+        this_server_base = server_base[:]
+        if 'server_env' in benchmark:
+            this_server_base[8:8] = benchmark['server_env']
+        server_cmd = this_server_base + benchmark['server']
         print('  ' + ' '.join(server_cmd))
         start_and_wait_for_server(server_cmd, benchmark['server_address'])
         print()
