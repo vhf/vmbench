@@ -219,21 +219,42 @@ benchmarks = [{
     'title': 'HTTP server (golang)',
     'server': ['/usr/src/servers/gohttp'],
     'server_address': tcp_address,
+    'server_env': ['-e', 'GOMAXPROCS', '1'],
+    'client': http_client,
+}, {
+    'name': 'http-golang-nolimit',
+    'title': 'HTTP server (golang)',
+    'server': ['/usr/src/servers/gohttp'],
+    'server_address': tcp_address,
     'client': http_client,
 }, {
     'name': 'tcpecho-erlang-elixir',
     'title': 'TCP echo server (elixir)',
-    'server': ['/bin/sh', '-c', "cd /usr/src/servers/echo && elixir -pa _build/prod/consolidated --no-halt --erl \"+S 1:1\" -S mix"],
+    'server': ['/bin/sh', '-c', "cd /usr/src/servers/tcp_elixir && elixir -pa _build/prod/consolidated --no-halt --erl \"+S 1:1\" -S mix"],
     'server_env': ['-e', 'MIX_ENV', 'prod'],
     'server_address': tcp_address,
     'client': tcp_client,
 }, {
     'name': 'tcpecho-erlang-elixir-nolimit',
     'title': 'TCP echo server (elixir)',
-    'server': ['/bin/sh', '-c', "cd /usr/src/servers/echo && elixir -pa _build/prod/consolidated --no-halt -S mix"],
+    'server': ['/bin/sh', '-c', "cd /usr/src/servers/tcp_elixir && elixir -pa _build/prod/consolidated --no-halt -S mix"],
     'server_env': ['-e', 'MIX_ENV', 'prod'],
     'server_address': tcp_address,
     'client': tcp_client,
+}, {
+    'name': 'http-erlang-elixir',
+    'title': 'HTTP server (cowboy)',
+    'server': ['/bin/sh', '-c', "cd /usr/src/servers/http_elixir && elixir -pa _build/prod/consolidated --no-halt --erl \"+S 1:1\" -S mix"],
+    'server_env': ['-e', 'MIX_ENV', 'prod'],
+    'server_address': tcp_address,
+    'client': http_client,
+}, {
+    'name': 'http-erlang-elixir-nolimit',
+    'title': 'HTTP server (cowboy)',
+    'server': ['/bin/sh', '-c', "cd /usr/src/servers/http_elixir && elixir -pa _build/prod/consolidated --no-halt -S mix"],
+    'server_env': ['-e', 'MIX_ENV', 'prod'],
+    'server_address': tcp_address,
+    'client': http_client,
 }]
 
 

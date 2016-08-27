@@ -36,7 +36,8 @@ RUN vex bench pip --cache-dir=/var/lib/cache/pip \
 
 RUN vex bench pip freeze -r /usr/src/servers/requirements.txt
 RUN mix local.hex --force && mix local.rebar --force
-RUN cd /usr/src/servers/echo && mix deps.get && MIX_ENV=prod mix compile --force
+RUN cd /usr/src/servers/elixir_tcp && mix deps.get && MIX_ENV=prod mix compile --force
+RUN cd /usr/src/servers/elixir_http && mix deps.get && MIX_ENV=prod mix compile --force
 
 EXPOSE 25000
 
